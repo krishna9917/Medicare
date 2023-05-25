@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.application.comeato">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name="com.comeato.Utilities.MyApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Comeato"
+        tools:targetApi="31">
+        <activity
+            android:name=".Activity.MembershipPlan.MembershipPlanActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".Activity.PropertyDetail.PropertyDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activity.Profile.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.SignUp.SignUpActivity"
+            android:exported="false"
+            android:theme="@style/ThemeWithBackgroundImage"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Activity.Login.LoginActivity"
+            android:exported="false"
+            android:theme="@style/ThemeWithBackgroundImage"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Activity.Search.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.comeato.Activity.Main.MainActivity"
+            android:exported="true">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name="com.comeato.Activity.Home.HomeActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+        </activity>
+    </application>
+
+</manifest>

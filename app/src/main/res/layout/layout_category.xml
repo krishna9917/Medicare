@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="category"
+            type="com.application.comeato.models.Category" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:id="@+id/cvImage"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginHorizontal="20dp"
+                app:strokeWidth="0.2dp"
+                app:strokeColor="@color/color_gray_50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:cardCornerRadius="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgCat"
+                    android:layout_width="70dp"
+                    app:netImageSrc="@{category.image}"
+                    android:layout_height="70dp"
+                 />
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <TextView
+                android:id="@+id/txtCatName"
+                style="@style/Style_bold_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@{category.name}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/cvImage"
+                app:layout_constraintStart_toStartOf="@+id/cvImage"
+                app:layout_constraintTop_toBottomOf="@id/cvImage" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

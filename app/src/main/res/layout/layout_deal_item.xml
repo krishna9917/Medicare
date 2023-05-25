@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.content.Context" />
+        <import type="android.content.res.ColorStateList"/>
+        <import type="androidx.core.content.ContextCompat"/>
+
+        <variable name="color" type="int"/>
+
+        <variable
+            name="context" type="Context" />
+
+    </data>
+
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:clickable="true"
+    android:id="@+id/cbItem"
+    android:focusable="true"
+    android:layout_marginVertical="10dp"
+    app:strokeColor="@color/color_theme_5"
+    android:layout_marginHorizontal="10dp"
+   >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:background="@{context.getResources().getColor(color)}"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:text="Four Pints + One Starter"
+            android:layout_width="match_parent"
+            style="@style/Style_bold_font"
+            android:textSize="18sp"
+            android:id="@+id/txtDealName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtDealName"
+            android:text="Valid on Food Beverages Only"
+            android:layout_width="0dp"
+            android:textSize="12sp"
+            android:id="@+id/txtCouponType"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/txtLine"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="₹ 990"
+                android:textSize="12sp"
+                style="@style/Style_bold_font"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="₹ 1990"
+                android:textSize="10sp"
+                app:strikeThrough="@{true}"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <TextView
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="15dp"
+            android:id="@+id/txtLine"
+            android:background="@color/color_theme_5"
+            app:layout_constraintTop_toBottomOf="@id/txtCouponType"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Valid Upto 2 People"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/color_theme_150"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/txtPeopleValid"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/txtLine"
+                style="@style/Style_medium_font"
+                android:drawablePadding="10dp"
+                app:drawableStartCompat="@drawable/ic_people" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Valid for All Day"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/color_theme_150"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="3dp"
+            android:textSize="12sp"
+            android:id="@+id/txtTimeValid"
+            app:layout_constraintTop_toBottomOf="@id/txtPeopleValid"
+            style="@style/Style_medium_font"
+            android:drawablePadding="10dp"
+            app:drawableStartCompat="@drawable/ic_time" />
+
+
+     <androidx.constraintlayout.widget.ConstraintLayout
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         android:layout_marginTop="12dp"
+         app:layout_constraintTop_toBottomOf="@id/txtTimeValid"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+         <com.google.android.material.card.MaterialCardView
+             android:layout_width="wrap_content"
+             app:strokeColor="@color/color_gray_40"
+             app:strokeWidth="0.6dp"
+             android:id="@+id/cvDetail"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:cardCornerRadius="10dp"
+             app:cardElevation="0dp"
+             android:layout_height="wrap_content">
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:paddingVertical="7dp"
+                 android:paddingHorizontal="10dp"
+                 android:layout_height="match_parent">
+
+                 <TextView
+                     style="@style/Style_bold_font"
+                     android:text="Show Details"
+                     android:textSize="12sp"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"/>
+             </LinearLayout>
+         </com.google.android.material.card.MaterialCardView>
+
+         <com.google.android.material.card.MaterialCardView
+             android:layout_width="wrap_content"
+             app:strokeColor="@color/color_gray_40"
+             app:strokeWidth="0.6dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintStart_toEndOf="@id/cvDetail"
+             android:id="@+id/cvTermCon"
+             android:layout_marginStart="10dp"
+             app:cardCornerRadius="10dp"
+             app:cardElevation="0dp"
+             android:layout_height="wrap_content">
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:paddingVertical="7dp"
+                 android:paddingHorizontal="15dp"
+                 android:layout_height="match_parent">
+
+                 <TextView
+                     style="@style/Style_bold_font"
+                     android:text="T&amp;C"
+                     android:textSize="12sp"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"/>
+             </LinearLayout>
+         </com.google.android.material.card.MaterialCardView>
+
+
+         <com.google.android.material.card.MaterialCardView
+             android:layout_width="wrap_content"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             android:layout_marginStart="10dp"
+             app:cardElevation="0dp"
+             android:layout_height="wrap_content">
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:paddingVertical="7dp"
+                 android:paddingHorizontal="15dp"
+                 android:background="@color/color_green_80"
+                 android:layout_height="match_parent">
+
+                 <TextView
+                     style="@style/Style_bold_font"
+                     android:text="Show Deal Code"
+                     android:textSize="12sp"
+                     android:textColor="@color/white"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"/>
+             </LinearLayout>
+         </com.google.android.material.card.MaterialCardView>
+
+
+     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+</layout>

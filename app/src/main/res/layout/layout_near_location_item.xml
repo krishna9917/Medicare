@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.content.Context" />
+        <import type="android.content.res.ColorStateList"/>
+        <import type="androidx.core.content.ContextCompat"/>
+        <variable
+            name="nearLocation"
+            type="com.application.comeato.models.NearLocationData" />
+        <variable name="textColor" type="int"/>
+        <variable
+            name="context" type="Context" />
+    </data>
+
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        app:strokeWidth="0.3dp"
+        android:layout_margin="4dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@{context.getResources().getColor(textColor)}"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{nearLocation.locationName}"
+                style="@style/Style_medium_font"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:drawablePadding="5dp"
+                android:textColor="@{context.getResources().getColor(textColor)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:drawableEndCompat="@drawable/ic_location"
+                app:drawableTint="@{ColorStateList.valueOf(ContextCompat.getColor(context,textColor))}"
+               />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+</layout>

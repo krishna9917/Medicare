@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_transparent">#00F9A825</color>
+
+    <color name="color_theme_100">#cd1d1c</color>
+    <color name="color_theme_95">#FAF13332</color>
+    <color name="color_theme_90">#DD1413</color>
+    <color name="color_theme_80">#92CD1D1C</color>
+    <color name="color_theme_180">#FA2C1414</color>
+    <color name="color_theme_70">#BF2C1414</color>
+    <color name="color_theme_150">#FA830F0F</color>
+    <color name="color_theme_20">#45CD1D1C</color>
+    <color name="color_theme_5">#0CCD1D1C</color>
+    <color name="color_theme_1">#07CD1D1C</color>
+    <color name="color_black_80">#C3000000</color>
+    <color name="color_black_50">#FF000000</color>
+    <color name="color_black_20">#393737</color>
+    <color name="color_black_10">#514E4E</color>
+    <color name="color_black_8">#CD514E4E</color>
+    <color name="color_black_5">#7C514E4E</color>
+    <color name="color_black_1">#52514E4E</color>
+    <color name="color_gray_100">#7A7878</color>
+    <color name="color_gray_80">#898989</color>
+    <color name="color_gray_75">#F0898989</color>
+    <color name="color_gray_70">#C6A9ACAC</color>
+    <color name="color_gray_60">#A8A9ACAC</color>
+    <color name="color_gray_50">#8FA9ACAC</color>
+    <color name="color_gray_40">#70A9ACAC</color>
+    <color name="color_gray_35">#57A9ACAC</color>
+    <color name="color_gray_30">#25A9ACAC</color>
+    <color name="color_gray_20">#12A9ACAC</color>
+    <color name="color_gray_10">#E1FFFDFD</color>
+    <color name="color_green_100">#E10AAA0A</color>
+    <color name="color_green_80">#A9279A27</color>
+    <color name="color_green_60">#770AAA0A</color>
+    <color name="color_blue_100">#1CA5B1</color>
+
+    <color name="color_skin_50">#fdd8b5</color>
+    <color name="color_yellow_100">#F9A825</color>
+
+
+
+    <color name="color_1">#EDB886</color>
+    <color name="color_2">#F9A825</color>
+    <color name="color_3">#AAA914</color>
+    <color name="color_4">#00838F</color>
+    <color name="color_5">#AD1457</color>
+    <color name="color_6">#605037</color>
+    <color name="color_7">#C62828</color>
+
+
+</resources>

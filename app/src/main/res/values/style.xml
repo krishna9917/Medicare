@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <style name="ThemeWithBackgroundImage" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/background</item>
+        <item name="colorPrimary">@color/color_theme_100</item>
+        <item name="colorPrimaryVariant">@color/color_theme_100</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/color_theme_100</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+
+    // font style
+
+    <style name="Style_bold_font">
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/bold</item>
+    </style>
+
+    <style name="Style_medium_font">
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/medium</item>
+    </style>
+
+    <style name="Style_regular_font">
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/regular</item>
+    </style>
+
+
+    <!--    search input field theme-->
+    <style name="StyleInputField" parent="@style/Style_medium_font">
+        <item name="android:background">@drawable/rounded__drawable</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">14dp</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+
+    <style name="BottomSheetStyle" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_corner</item>
+    </style>
+
+
+
+    <!--    profile -->
+    <style name="Style_profile_detail" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:padding">5dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColor">@color/color_theme_70</item>
+        <item name="android:fontFamily">@font/regular</item>
+    </style>
+
+
+
+
+
+</resources>

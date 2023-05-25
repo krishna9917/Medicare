@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <data>
+        <variable
+            name="property"
+            type="com.application.comeato.models.Property" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            app:cardCornerRadius="8dp"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:id="@+id/cvItem"
+            android:focusable="true"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <ImageView
+                    android:id="@+id/imgProduct"
+                    android:layout_width="match_parent"
+                    app:netImageSrc="@{property.image}"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/restaurant"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="160dp"/>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:background="@drawable/gradient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingVertical="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/imgProduct"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtProductName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_width="match_parent"
+                        android:textSize="16sp"
+                        style="@style/Style_bold_font"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        app:layout_constraintBottom_toTopOf="@id/txtLocation"
+                        android:maxLines="2"
+                        android:layout_height="wrap_content"
+                        android:text="@{property.name}"
+                        android:textColor="@color/white"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/txtLocation"
+                        app:layout_constraintEnd_toEndOf="@id/txtProductName"
+                        android:layout_width="0dp"
+                        app:layout_constraintStart_toStartOf="@id/txtProductName"
+                        style="@style/Style_regular_font"
+                        android:text="@{property.location}"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_height="wrap_content"
+                        app:drawableTint="@color/color_theme_100"
+                        app:drawableStartCompat="@drawable/ic_location1" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+</layout>
