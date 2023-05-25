@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -20,7 +21,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -43,14 +49,15 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
 
+    implementation 'com.google.code.gson:gson:2.10.1'
 
-//bottom tab layout
-    implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -77,6 +84,47 @@ dependencies {
     implementation 'com.github.aabhasr1:OtpView:v1.1.2-ktx'
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
+
+
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
+
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+
+    //3d Recyclerview
+    implementation 'com.github.sparrow007:carouselrecyclerview:1.2.6'
+
+
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+    implementation "androidx.fragment:fragment-ktx:1.6.0"
+
+
+
+
+
+    //room database
+    def room_version = "2.5.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:$room_version")
+
+
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20") {
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib"
+    }
 
 
 }

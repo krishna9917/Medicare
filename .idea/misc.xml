@@ -1,0 +1,66 @@
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable-v24/ic_back_arrow.xml" value="0.246" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/active_otp_box.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/avd_discount.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/avd_home.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/avd_offer.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/avd_profile.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/avd_property.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/background_bottom_nav_item.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/bottom_sheet_corner.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/bottomsheet_corner.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/btn_gradient.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/color_bottom_nav_item.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/error_otp_box.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/gradient.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/gradient2.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/gradient3.xml" value="0.246" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_account.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_arrow_right.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_discount.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_eye.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_google.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_hide_eye.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_home.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_india_flag.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_offer.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_property.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/ic_support.xml" value="0.246" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/image_background.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/otp_box.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/rounded__drawable.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/shape_light_input_field.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/drawable/success_otp_bos.xml" value="0.29" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/activity_home.xml" value="0.25" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/activity_profile.xml" value="0.33" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/activity_search.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/activity_sign_up.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/fragment_home.xml" value="0.36102564102564105" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/fragment_property.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_account_tabs.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_category.xml" value="0.33" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_home_banner.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_near_location_item.xml" value="0.33" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_otp_verifcation.xml" value="0.365625" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_property_item.xml" value="0.36102564102564105" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_property_item1.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_property_item2.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/layout/layout_top_brand_property.xml" value="0.36102564102564105" />
+        <entry key="..\:/Users/softechure/AndroidStudioProjects/Comeato/app/src/main/res/menu/home_bottom_menu.xml" value="0.36666666666666664" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="corretto-11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

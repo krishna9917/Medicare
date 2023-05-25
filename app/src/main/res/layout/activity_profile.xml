@@ -10,12 +10,21 @@
             name="editable"
             type="boolean" />
 
+        <variable
+            name="isProgress"
+            type="Boolean" />
+
+        <variable
+            name="userProfile"
+            type="com.application.comeato.models.User" />
+
     </data>
 
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="@{userProfile==null?View.GONE:View.VISIBLE}"
     tools:context=".Activity.Profile.ProfileActivity">
 
 
@@ -41,16 +50,36 @@
             android:layout_height="wrap_content"/>
 
 
-
-        <ImageView
-            android:padding="10dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="50dp"
+            android:visibility="@{editable? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_update"
-            android:visibility="@{editable? View.VISIBLE : View.GONE}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tint="@color/white" />
+            android:layout_height="50dp">
+
+            <ImageView
+                android:src="@drawable/ic_update"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:id="@+id/imgUpdateProfile"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:visibility="@{isProgress?View.GONE:View.VISIBLE}"
+                android:layout_height="match_parent"
+                app:tint="@color/white" />
+
+            <ProgressBar
+                app:layout_constraintTop_toTopOf="parent"
+                android:indeterminateTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="@{isProgress?View.VISIBLE:View.GONE}"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
         <com.google.android.material.card.MaterialCardView
@@ -77,7 +106,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:cardCornerRadius="70dp"
             app:cardElevation="4dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -87,9 +115,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/imgCamera"
+                android:id="@+id/imgProfile"
                 android:background="@drawable/gradient"
-                android:src="@drawable/ic_account" />
+                app:netImageSrc="@{userProfile.profile_pic_url}"
+                app:placeholder="@{@drawable/ic_account}"
+                />
 
 
         </com.google.android.material.card.MaterialCardView>
@@ -106,6 +136,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:cardElevation="6dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/clBackground"
         app:layout_constraintBottom_toBottomOf="@id/clBackground"
@@ -201,78 +232,103 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="30dp"
-        android:id="@+id/cvDetails"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+
+    <androidx.core.widget.NestedScrollView
         app:layout_constraintBottom_toTopOf="@id/txtLogoutBtn"
         app:layout_constraintTop_toBottomOf="@id/clBackground"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="45dp"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:drawableStart="@drawable/ic_account"
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:text="Krishna Pandey"
-                style="@style/Style_profile_detail"
-                android:enabled="@{editable}"
-                android:clickable="@{editable}"
-                android:drawableTint="@color/color_theme_100"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginHorizontal="30dp"
+                android:id="@+id/cvDetails"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="45dp"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:background="@color/color_theme_5"
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"/>
+                    <EditText
+                        android:id="@+id/edtName"
+                        android:drawableStart="@drawable/ic_account"
+                        android:layout_width="match_parent"
+                        android:text="@{userProfile.name}"
+                        style="@style/Style_profile_detail"
+                        android:enabled="@{editable}"
+                        android:textColor="@{editable?@color/color_black_10:@color/color_gray_70}"
+                        android:clickable="@{editable}"
+                        android:drawableTint="@color/color_theme_100"
+                        android:layout_height="wrap_content"/>
 
-            <EditText
-                android:drawableStart="@drawable/ic_email"
-                android:layout_width="match_parent"
-                android:text="sharmakrishnapandey@gmail.com"
-                android:layout_marginTop="25dp"
-                android:enabled="@{editable}"
-                android:clickable="@{editable}"
-                style="@style/Style_profile_detail"
-                android:drawableTint="@color/color_theme_100"
-                android:layout_height="wrap_content"/>
+                    <TextView
+                        android:background="@color/color_theme_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"/>
 
-            <TextView
-                android:background="@color/color_theme_5"
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"/>
+                    <EditText
+                        android:drawableStart="@drawable/ic_email"
+                        android:layout_width="match_parent"
+                        android:text="@{userProfile.email}"
+                        android:layout_marginTop="25dp"
+                        android:enabled="false"
+                        android:clickable="false"
+                        style="@style/Style_profile_detail"
+                        android:drawableTint="@color/color_theme_100"
+                        android:layout_height="wrap_content"/>
 
-
-            <EditText
-                android:drawableStart="@drawable/ic_phone"
-                android:layout_width="match_parent"
-                android:text="9548829374"
-                android:layout_marginTop="25dp"
-                android:enabled="@{editable}"
-                android:clickable="@{editable}"
-                android:inputType="number"
-                android:maxLength="10"
-                style="@style/Style_profile_detail"
-                android:drawableTint="@color/color_theme_100"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:background="@color/color_theme_5"
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"/>
+                    <TextView
+                        android:background="@color/color_theme_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"/>
 
 
-        </LinearLayout>
+                    <EditText
+                        android:drawableStart="@drawable/ic_phone"
+                        android:layout_width="match_parent"
+                        android:text="@{userProfile.mobile}"
+                        android:layout_marginTop="25dp"
+                        android:enabled="false"
+                        android:clickable="false"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        style="@style/Style_profile_detail"
+                        android:drawableTint="@color/color_theme_100"
+                        android:layout_height="wrap_content"/>
 
-    </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:background="@color/color_theme_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"/>
+
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
 
 

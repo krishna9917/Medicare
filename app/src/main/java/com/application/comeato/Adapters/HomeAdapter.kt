@@ -10,17 +10,16 @@ import com.application.comeato.Utilities.UtilsFunction
 import com.application.comeato.databinding.*
 import com.application.comeato.models.HomeData
 
-class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class HomeAdapter(val layoutType :Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     lateinit var  clickListener:AdapterClickListener
 
-    constructor(clickListener:AdapterClickListener) : this()
+    constructor(layoutType:Int,clickListener:AdapterClickListener) : this(layoutType)
     {
         this.clickListener=clickListener
     }
 
-    private var homeData: HomeData = HomeData()
-    private var layoutType = 0
+    private  var homeData: HomeData? =null
 
     private var colors= intArrayOf(R.color.color_1,R.color.color_2,R.color.color_3,R.color.color_4,R.color.color_5,R.color.color_6,R.color.color_7)
     var colorPosition = -1
@@ -96,40 +95,88 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         when (viewHolder.itemViewType) {
             0,2 -> {
                 val holder: BannerViewHolder = viewHolder as BannerViewHolder
-                holder.homeBannerBinding.banner =  if(viewHolder.itemViewType==0) homeData.topBanner[position] else homeData.brandBanner[position]
+                if(homeData==null)
+                {
+                    holder.homeBannerBinding.showShimmer=true
+                }else
+                {
+                    holder.homeBannerBinding.showShimmer=false
+                    holder.homeBannerBinding.banner =  if(viewHolder.itemViewType==0) homeData?.home_slider!![position] else homeData?.brand_slider!![position]
+                }
             }
             1->{
                 val holder: CategoryViewHolder = viewHolder as CategoryViewHolder
-                holder.categoryBinding.category = homeData.category[position]
-                UtilsFunction.setAnimation(holder.itemView.context, holder.itemView, R.anim.animation_bounce)
+                if(homeData==null) {
+                    holder.categoryBinding.showShimmer = true
+                }else
+                {
+                    holder.categoryBinding.showShimmer = false
+                    holder.categoryBinding.category = homeData?.categories!![position]
+                    UtilsFunction.setAnimation(holder.itemView.context, holder.itemView, R.anim.animation_bounce)
+                    holder.categoryBinding.cvItem.setOnClickListener{
+                        clickListener.onClick(homeData?.categories!![position], position,layoutType)
+                    }
+
+                }
+
             }
             3->{
                 val holder: NearPropertyViewHolder = viewHolder as NearPropertyViewHolder
-                holder.nearDealProperty.property = homeData.nearDeals[position]
-                UtilsFunction.setAnimation(holder.itemView.context, holder.itemView, R.anim.animation_fall_down)
-                holder.nearDealProperty.cvItem.setOnClickListener {
-                    clickListener.onClick(homeData.nearDeals[position], position,layoutType)
+                if(homeData==null)
+                {
+                    holder.nearDealProperty.showShimmer=true
+                }else
+                {
+                    holder.nearDealProperty.showShimmer=false
+                    holder.nearDealProperty.property = homeData?.featured_properties!![position]
+                    UtilsFunction.setAnimation(holder.itemView.context, holder.itemView, R.anim.animation_fall_down)
+                    holder.nearDealProperty.cvItem.setOnClickListener {
+                        clickListener.onClick(homeData?.featured_properties!![position], position,layoutType)
+                    }
                 }
             }
             4->{
                 val holder: TopBrandViewHolder = viewHolder as TopBrandViewHolder
-                holder.layoutTopBrandPropertyBinding.property = homeData.topBrand[position]
-                holder.layoutTopBrandPropertyBinding.cvItem.setOnClickListener {
-                    clickListener.onClick(homeData.topBrand[position], position,layoutType)
+                if(homeData==null)
+                {
+                    holder.layoutTopBrandPropertyBinding.showShimmer=true
+                }else
+                {
+                    holder.layoutTopBrandPropertyBinding.showShimmer=false
+                    holder.layoutTopBrandPropertyBinding.property = homeData?.latest_properties!![position]
+                    holder.layoutTopBrandPropertyBinding.cvItem.setOnClickListener {
+                        clickListener.onClick(homeData?.latest_properties!![position], position,layoutType)
+                    }
                 }
+
             }
             5->{
                 val holder: DayDealViewHolder = viewHolder as DayDealViewHolder
-                holder.layDayDeals.property = homeData.dayDeals[position]
-                UtilsFunction.setAnimation(holder.itemView.context, holder.itemView, R.anim.animation_slide_in_right)
-                holder.layDayDeals.cvItem.setOnClickListener {
-                    clickListener.onClick(homeData.dayDeals[position], position,layoutType)
+                if(homeData==null)
+                {
+                    holder.layDayDeals.showShimmer=true
+                }else
+                {
+                    holder.layDayDeals.showShimmer=false
+                    holder.layDayDeals.property = homeData?.special_deals!![position]
+                    UtilsFunction.setAnimation(holder.itemView.context, holder.itemView, R.anim.animation_slide_in_right)
+                    holder.layDayDeals.cvItem.setOnClickListener {
+                        clickListener.onClick(homeData?.special_deals!![position], position,layoutType)
+                    }
                 }
+
             }
             6->{
                 val holder: NearLocationViewHolder = viewHolder as NearLocationViewHolder
-                holder.nearLocationItemBinding.nearLocation=homeData.nearLocations[position]
-                if(colorPosition<colors.size)
+                if(homeData==null)
+                {
+                    holder.nearLocationItemBinding.showShimmer=true
+                }else
+                {
+                    holder.nearLocationItemBinding.showShimmer=false
+                    holder.nearLocationItemBinding.nearLocation= homeData?.near_by_locations!![position]
+                }
+                if(colorPosition<colors.size-1)
                 {
                     colorPosition++
                 }else
@@ -138,6 +185,7 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 }
                 holder.nearLocationItemBinding.context=holder.itemView.context
                 holder.nearLocationItemBinding.textColor=colors[colorPosition]
+
             }
         }
 
@@ -150,23 +198,39 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     override fun getItemCount(): Int
     {
-        return when (layoutType) {
-            0 -> homeData.topBanner.size
-            1 -> homeData.category.size
-            2 -> homeData.brandBanner.size
-            3 -> homeData.nearDeals.size
-            4 -> homeData.topBrand.size
-            5 -> homeData.dayDeals.size
-            6->  homeData.nearLocations.size
+        if(homeData==null)
+        {
+           return when(layoutType)
+            {
+                0 -> 1
+                1 -> 8
+                2 -> 1
+                3 -> 5
+                4 -> 4
+                5 -> 6
+                6 -> 4
+                else -> 0
+            }
+        }
+
+        return when (layoutType)
+        {
+            0 -> homeData?.home_slider?.size!!
+            1 -> homeData?.categories?.size!!
+            2 -> homeData?.brand_slider?.size!!
+            3 -> homeData?.featured_properties?.size!!
+            4 -> homeData?.latest_properties?.size!!
+            5 -> homeData?.special_deals?.size!!
+            6-> homeData?.near_by_locations?.size!!
             else -> 0
         }
 
     }
 
-    public fun submitList(homeData: HomeData, layout: Int)
+    public fun submitList(homeData: HomeData)
     {
         this.homeData = homeData
-        this.layoutType = layout
+
         notifyDataSetChanged()
     }
 

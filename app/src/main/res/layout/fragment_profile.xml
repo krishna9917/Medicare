@@ -3,6 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="isLogin"
+            type="Boolean" />
+
+        <variable
+            name="LoginUserData"
+            type="com.application.comeato.models.User" />
+
+    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,7 +25,7 @@
         <ImageView
             android:id="@+id/imgBg"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="260dp"
             android:scaleType="centerCrop"
             android:src="@drawable/background4"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +44,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="120dp"
             android:background="@color/white"
             android:orientation="vertical"
             android:rotation="-80"
@@ -49,7 +62,7 @@
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:padding="20dp"
-            android:visibility="gone"
+            android:visibility="@{isLogin?View.GONE:View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -77,6 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:id="@+id/cvLogin"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="@color/color_gray_30"
@@ -99,7 +113,8 @@
                         android:gravity="center"
                         android:text="@string/login_now"
                         android:textColor="@color/white"
-                        app:drawableEndCompat="@drawable/ic_arrow_right" />
+                        app:drawableEndCompat="@drawable/ic_arrow_right"
+                        app:drawableTint="@color/white" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -114,6 +129,7 @@
             android:layout_marginTop="35dp"
             android:orientation="vertical"
             android:padding="20dp"
+            android:visibility="@{isLogin?View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -132,10 +148,12 @@
                 app:strokeWidth="1dp">
 
                 <ImageView
+                    android:id="@+id/imgProfile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/gradient"
-                    android:src="@drawable/ic_account" />
+                    app:netImageSrc="@{LoginUserData.profile_pic_url}"
+                    app:placeholder="@{@drawable/ic_account}"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -155,7 +173,7 @@
                     style="@style/Style_bold_font"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Krishna pandey"
+                    android:text="@{LoginUserData.name}"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     app:layout_constraintStart_toEndOf="@id/cvProfile" />
@@ -164,7 +182,7 @@
                     style="@style/Style_regular_font"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="sharmakrishnapandey@gmail.com"
+                    android:text="@{LoginUserData.email}"
                     android:textColor="@color/white"
                     android:textSize="13sp"
                     app:layout_constraintStart_toEndOf="@id/cvProfile" />
@@ -218,7 +236,8 @@
             app:layout_constraintTop_toBottomOf="@id/imgBg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp"/>
 
 
 

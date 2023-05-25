@@ -3,13 +3,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.application.comeato.Interfaces.AdapterClickListener
 import com.application.comeato.R
 import com.application.comeato.databinding.LayoutPropertyItem2Binding
+import com.application.comeato.models.FeaturedProperty
 import com.application.comeato.models.Property
 
-class PropertyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class PropertyAdapter(val clickListener:AdapterClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
-    private var propertiesList =ArrayList<Property>()
+    private var propertiesList =ArrayList<FeaturedProperty>()
     private class PropertyViewHolder(val itemBinding: LayoutPropertyItem2Binding) : RecyclerView.ViewHolder(itemBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -25,15 +27,24 @@ class PropertyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     {
        val holder=viewHolder as PropertyViewHolder
         holder.itemBinding.property = propertiesList[position]
+        holder.itemBinding.cvDetailCard.setOnClickListener{
+            clickListener.onClick(propertiesList[position],position,102)
+        }
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount(): Int
+    {
         return propertiesList.size
     }
 
-   public fun submitList(propertiesList:ArrayList<Property>)
+   public fun submitList(propertiesList:ArrayList<FeaturedProperty>)
    {
          this.propertiesList=propertiesList
          notifyDataSetChanged()
    }
+    public fun addList(propertiesList:ArrayList<FeaturedProperty>)
+    {
+        this.propertiesList.addAll(propertiesList)
+        notifyItemRangeChanged(this.propertiesList.size,propertiesList.size)
+    }
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="property"
-            type="com.application.comeato.models.Property" />
+            type="com.application.comeato.models.FeaturedProperty" />
 
     </data>
 
@@ -60,7 +60,7 @@
                     <ImageView
                         android:id="@+id/imgProduct"
                         android:layout_width="match_parent"
-                        app:netImageSrc="@{property.image}"
+                        app:netImageSrc="@{property.featured_image_url}"
                         android:scaleType="centerCrop"
                         android:src="@drawable/restaurant"
                         android:layout_height="match_parent"/>

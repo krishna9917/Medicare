@@ -1,82 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
 
-        <import type="android.content.Context" />
+        <import type="android.view.View" />
 
-        <import type="android.content.res.ColorStateList" />
+        <import type="com.application.comeato.R" />
 
-        <import type="androidx.core.content.ContextCompat" />
-
-        <variable
-            name="nearLocation"
-            type="com.application.comeato.models.NearLocationData" />
 
         <variable
-            name="color"
-            type="int" />
+            name="planData"
+            type="com.application.comeato.models.SubPlane" />
 
         <variable
-            name="context"
-            type="Context" />
+            name="isMainPlanActive"
+            type="Boolean" />
+
+
     </data>
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="4dp">
+    <com.jackandphantom.carouselrecyclerview.view.ReflectionViewContainer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:reflect_gap="0dp"
+        app:reflect_relativeDepth="0.00">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@{context.getResources().getColor(color)}">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="250dp"
+            android:layout_height="370dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/gradient5"
-                android:orientation="vertical"
-                android:padding="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:netImageSrc="@{planData.plane_banner_img_url}" />
+
 
                 <LinearLayout
+                    android:id="@+id/llApplyFor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/gradient5"
+                    android:orientation="horizontal"
+                    android:paddingVertical="2dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         style="@style/Style_regular_font"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Apply On "
+                        android:text="@string/apply_on"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/txtName"
                         style="@style/Style_bold_font"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Restaurants"
+                        android:layout_marginStart="3dp"
+                        android:text="@{planData.name}"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/gradient5"
+                    android:orientation="horizontal"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llApplyFor">
 
                     <TextView
                         style="@style/Style_regular_font"
@@ -85,61 +103,76 @@
                         android:drawableStart="@drawable/ic_time"
                         android:drawablePadding="8dp"
                         android:drawableTint="@color/white"
-                        android:text="Valid till "
+                        android:text="Valid for "
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
                     <TextView
-                        style="@style/Style_medium_font"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="30 May 2024"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvEditProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/color_blue_100"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:strokeColor="@color/white"
-                app:strokeWidth="0.5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp">
-
-                    <TextView
+                        android:id="@+id/txtValidity"
                         style="@style/Style_bold_font"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="5dp"
-                        android:gravity="center"
-                        android:text="@string/buy_now"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/txtPrice"
+                    style="@style/Style_bold_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/color_theme_80"
+                    android:paddingHorizontal="20dp"
+                    android:text="@{@string/rupee_symbol+planData.amount}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-    </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvBuyPlan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_marginVertical="8dp"
+                    android:clickable="@{isMainPlanActive &amp;&amp; planData.user_subscription_status!=1}"
+                    android:focusable="@{isMainPlanActive &amp;&amp; planData.user_subscription_status!=1}"
+                    app:cardBackgroundColor="@{planData.user_subscription_status!=1?@color/color_blue_100:@color/color_transparent}"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp">
+
+                        <TextView
+                            android:id="@+id/txtBtn"
+                            style="@style/Style_bold_font"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:gravity="center"
+                            android:text="@{planData.user_subscription_status!=1?@string/buy_now:@string/active}"
+                            android:textColor="@{planData.user_subscription_status!=1?@color/white:@color/color_green_100}" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </com.jackandphantom.carouselrecyclerview.view.ReflectionViewContainer>
 </layout>

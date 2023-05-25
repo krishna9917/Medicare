@@ -3,37 +3,94 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.comeato.Activity.Home.HomeActivity">
+
+    <data>
+
+        <import type="android.view.View" />
 
 
+        <variable
+            name="fragmentVisibility"
+            type="int" />
 
-    <FrameLayout
-       app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/flContainer"
-        app:layout_constraintStart_toStartOf="parent"
+    </data>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="match_parent"
+        tools:context="com.comeato.Activity.Home.HomeActivity">
+
+        <FrameLayout
+            android:id="@+id/flHomeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation"
+            android:layout_alignParentStart="true"
+            android:visibility="@{fragmentVisibility==1?View.VISIBLE:View.GONE}"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <FrameLayout
+            android:id="@+id/flProductContainer"
+            android:visibility="@{fragmentVisibility==2?View.VISIBLE:View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <FrameLayout
+            android:id="@+id/flCategoryContainer"
+            android:visibility="@{fragmentVisibility==3?View.VISIBLE:View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
 
 
-    <np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        app:cbn_selectedColor="@color/white"
-        app:cbn_unSelectedColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cbn_fabBg="@color/color_theme_100"
-        app:cbn_bg="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="wrap_content" />
+        <FrameLayout
+            android:id="@+id/flOffersContainer"
+            android:visibility="@{fragmentVisibility==4?View.VISIBLE:View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/flAccountContainer"
+            android:visibility="@{fragmentVisibility==5?View.VISIBLE:View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/home_nav_bg"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            app:itemIconTint="@color/home_nav"
+            app:itemTextColor="@color/home_nav"
+            app:menu="@menu/home_nav_menu" />
+
+
+    </RelativeLayout>
 </layout>

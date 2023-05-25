@@ -6,9 +6,16 @@
         <import type="android.content.Context" />
         <import type="android.content.res.ColorStateList"/>
         <import type="androidx.core.content.ContextCompat"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="showShimmer"
+            type="Boolean" />
+
         <variable
             name="nearLocation"
-            type="com.application.comeato.models.NearLocationData" />
+            type="com.application.comeato.models.NearByLocation" />
         <variable name="textColor" type="int"/>
         <variable
             name="context" type="Context" />
@@ -24,14 +31,25 @@
         app:strokeColor="@{context.getResources().getColor(textColor)}"
         android:layout_height="wrap_content">
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
+            android:visibility="@{showShimmer?View.GONE:View.VISIBLE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_height="wrap_content">
 
             <TextView
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{nearLocation.locationName}"
+                android:text="@{nearLocation.name}"
                 style="@style/Style_medium_font"
                 android:padding="10dp"
                 android:textSize="18sp"
@@ -44,6 +62,30 @@
                 app:drawableEndCompat="@drawable/ic_location"
                 app:drawableTint="@{ColorStateList.valueOf(ContextCompat.getColor(context,textColor))}"
                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:visibility="@{showShimmer?View.VISIBLE:View.GONE}"
+                android:layout_height="match_parent">
+                <TextView
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="10dp"
+                    android:textSize="18sp"
+                    android:background="@color/color_gray_100"
+                    android:drawablePadding="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

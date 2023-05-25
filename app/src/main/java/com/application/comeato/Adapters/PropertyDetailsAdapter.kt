@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.application.comeato.Dialog.ImageZoomer
 import com.application.comeato.Interfaces.AdapterClickListener
 import com.application.comeato.R
 import com.application.comeato.Utilities.UtilsFunction
@@ -12,7 +13,7 @@ import com.application.comeato.databinding.LayoutImageViewItemBinding
 import com.application.comeato.databinding.LayoutPropertyItem3Binding
 import com.application.comeato.databinding.LayoutPropertyTabsBinding
 import com.application.comeato.models.PropertyData
-
+import com.application.comeato.models.PropertyDetail
 
 
 class PropertyDetailsAdapter(private val layoutType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
@@ -24,7 +25,7 @@ class PropertyDetailsAdapter(private val layoutType: Int) : RecyclerView.Adapter
         this.clickListener=clickListener
     }
 
-    private var propertyDetails: PropertyData = PropertyData()
+    private var propertyDetails: PropertyDetail? = null
 
     private var tabSelected = 0
 
@@ -83,10 +84,11 @@ class PropertyDetailsAdapter(private val layoutType: Int) : RecyclerView.Adapter
     }
 
     override fun getItemCount(): Int {
+        if(propertyDetails==null) return 0
         return when (layoutType) {
-            1 -> propertyDetails.sliderImages.size
-            2 -> propertyDetails.propertyService.size
-            3 -> propertyDetails.similarProperty.size
+            1 -> propertyDetails?.property?.gallery!!.size
+            2 -> propertyDetails?.property?.tabs!!.size
+            3 -> propertyDetails?.property?.similar_properties!!.size
             else -> 0
         }
     }
@@ -102,47 +104,49 @@ class PropertyDetailsAdapter(private val layoutType: Int) : RecyclerView.Adapter
         when (viewHolder.itemViewType) {
             1 -> {
                 val holder = viewHolder as ImageSlider
-                holder.binding.imageData = propertyDetails.sliderImages[position]
+                holder.binding.image= propertyDetails?.property!!.gallery[position]
                 UtilsFunction.setAnimation(
                     holder.itemView.context,
                     holder.itemView,
                     R.anim.animation_slidefast_in_right
                 )
                 holder.itemView.setOnClickListener {
-                    clickListener.onClick(propertyDetails.sliderImages[position],position,102)
+                    ImageZoomer(holder.itemView.context, propertyDetails!!.property.gallery as ArrayList<String>,position).show()
+
                 }
             }
 
             2 -> {
                 val holder = viewHolder as PropertyTabs
-                holder.binding.tab = propertyDetails.propertyService[position]
+                holder.binding.tab = propertyDetails?.property!!.tabs[position]
                 holder.binding.selected = position == tabSelected
                 holder.binding.cvItem.setOnClickListener {
                     if(tabSelected!=position)
                     {
+                        notifyItemChanged(tabSelected)
                         tabSelected = position
-                        clickListener.onClick(propertyDetails.propertyService[position],position,101)
-                        notifyDataSetChanged()
+                        clickListener.onClick(propertyDetails?.property!!.tabs[position],position,101)
+                        notifyItemChanged(tabSelected)
                     }
                 }
             }
 
             3 -> {
                 val holder = viewHolder as SimilarPropertyViewHolder
-                holder.similarProperty.property = propertyDetails.similarProperty[position]
+                holder.similarProperty.property = propertyDetails?.property!!.similar_properties[position]
                 UtilsFunction.setAnimation(
                     holder.itemView.context,
                     holder.itemView,
                     R.anim.animation_fall_down
                 )
                 holder.similarProperty.cvItem.setOnClickListener {
-                    clickListener.onClick(propertyDetails.sliderImages[position],position,103)
+                    clickListener.onClick(propertyDetails?.property!!.similar_properties[position],position,103)
                 }
             }
         }
     }
 
-    public fun submitData(propertyDetails: PropertyData) {
+    public fun submitData(propertyDetails: PropertyDetail) {
         this.propertyDetails = propertyDetails
         notifyDataSetChanged()
     }

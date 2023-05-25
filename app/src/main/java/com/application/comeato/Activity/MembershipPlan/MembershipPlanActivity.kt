@@ -1,14 +1,18 @@
 package com.application.comeato.Activity.MembershipPlan
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.CompositePageTransformer
-import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.lifecycle.ViewModelProvider
+import com.application.comeato.Activity.CustomerSupport.SupportActivity
 import com.application.comeato.Adapters.MembershipPlanAdapter
+import com.application.comeato.PaymentGateway.CCAvenue.CCAvenue
 import com.application.comeato.R
+import com.application.comeato.Utilities.UtilsFunction
 import com.application.comeato.databinding.ActivityMembershipPlanBinding
+import com.comeato.Utilities.MyApp
 import java.lang.Math.abs
 
 
@@ -17,38 +21,80 @@ class MembershipPlanActivity : AppCompatActivity(), View.OnClickListener {
         ActivityMembershipPlanBinding.inflate(layoutInflater)
     }
 
+
+    private val repository by lazy {
+        MembershipRepository(MyApp.MySingleton.getApiInterface(), this)
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            MembershipModelViewFactory(repository)
+        )[MembershipModelView::class.java]
+    }
+
+    private val subPlanAdapter by lazy {
+        MembershipPlanAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        Initializer()
+        initializer()
     }
 
-    private fun Initializer() {
+    private fun initializer() {
         binding.imgBack.setOnClickListener(this)
-        binding.vpPlanFeatures.adapter = MembershipPlanAdapter()
-        setPlanViewPager()
-    }
+        binding.btnSupport.setOnClickListener(this)
+        binding.cvBuySubscription.setOnClickListener(this)
 
-    private fun setPlanViewPager() {
-
-        //product image Slider
-        binding.vpPlanFeatures.clipToPadding = false
-        binding.vpPlanFeatures.clipChildren = false
-        binding.vpPlanFeatures.offscreenPageLimit = 3
-        binding.vpPlanFeatures.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        val transformer = CompositePageTransformer()
-        transformer.addTransformer(MarginPageTransformer(0))
-        transformer.addTransformer { page, position ->
-            val r = 1 - abs(position)
-            page.scaleY = 0.85f + r * 0.28f
+        binding.vpPlanFeatures.adapter = subPlanAdapter
+        binding.vpPlanFeatures.apply {
+            setAlpha(true)
+            set3DItem(true)
         }
-        binding.vpPlanFeatures.setPageTransformer(transformer)
+
+
+        getData()
+
     }
+
+    private fun getData() {
+        viewModel.subscriptionPlanResponse.observe(this) {
+            MyApp.MySingleton.IS_PAYMENT_SUCCESS = false
+            if (it.status) {
+                binding.subscriptionData = it
+                subPlanAdapter.submitSubPlanList(it.sub_plane,it.annual_plane)
+            } else
+            {
+              UtilsFunction.showError(this,it.message)
+            }
+        }
+
+
+    }
+
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imgBack -> finish();
+            R.id.imgBack ->{
+                finish()
+                onBackPressedDispatcher.onBackPressed()
+            }
+            R.id.btnSupport -> {
+                startActivity(Intent(this, SupportActivity::class.java))
+            }
+            R.id.cvBuySubscription -> {
+                val goToPaymentGateway = Intent(this,CCAvenue::class.java)
+                goToPaymentGateway.putExtra("MainPlanId",binding.subscriptionData?.annual_plane?.id.toString())
+                goToPaymentGateway.putExtra("SubPlanId", "")
+                startActivity(goToPaymentGateway)
+            }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        if(MyApp.MySingleton.IS_PAYMENT_SUCCESS) repository.getMemberShipPlan()
     }
 }

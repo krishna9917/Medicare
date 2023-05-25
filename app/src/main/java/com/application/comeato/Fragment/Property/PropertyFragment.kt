@@ -1,24 +1,63 @@
 package com.comeato.Fragment.Property
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.application.comeato.Activity.PropertyDetail.PropertyDetailActivity
+import com.application.comeato.Activity.Search.SearchRepository
+import com.application.comeato.Activity.Search.SearchViewModel
+import com.application.comeato.Activity.Search.SearchViewModelFactory
 import com.application.comeato.Adapters.PropertyCategoryAdapter
 import com.application.comeato.Adapters.PropertyAdapter
+import com.application.comeato.Fragment.Property.PropertyRepository
+import com.application.comeato.Fragment.Property.PropertyViewModel
+import com.application.comeato.Fragment.Property.PropertyViewModelFactory
+import com.application.comeato.Interfaces.AdapterClickListener
+import com.application.comeato.Interfaces.FragmentLoadCallBack
+import com.application.comeato.R
 import com.application.comeato.databinding.FragmentPropertyBinding
-import com.application.comeato.models.Property
+import com.application.comeato.models.Category
+import com.application.comeato.models.FeaturedProperty
+import com.comeato.Utilities.MyApp
 
-class PropertyFragment : Fragment()
+class PropertyFragment(val isBackBtn:Boolean=false) : Fragment(),AdapterClickListener,View.OnClickListener
 {
 
     private val binding by lazy {
         FragmentPropertyBinding.inflate(layoutInflater)
     }
     private val propertyAdapter: PropertyAdapter by lazy {
-        PropertyAdapter()
+        PropertyAdapter(this)
     }
+    private val propertyCategories by lazy {
+        PropertyCategoryAdapter(this)
+    }
+
+    private val repository by lazy {
+        PropertyRepository(MyApp.MySingleton.getApiInterface(),requireContext())
+    }
+    private val viewModel by lazy {
+        ViewModelProvider(this,PropertyViewModelFactory(repository))[PropertyViewModel::class.java]
+    }
+
+    // using for properties
+    private val searchRepository by lazy {
+        SearchRepository(MyApp.MySingleton.getApiInterface(),requireContext())
+    }
+    private val searchViewModel by lazy {
+        ViewModelProvider(this, SearchViewModelFactory(searchRepository))[SearchViewModel::class.java]
+    }
+
+    private var selected_cat_id=0
+    private var page=1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,23 +68,114 @@ class PropertyFragment : Fragment()
 
     private fun Initializer()
     {
-        setTitle()
-        binding.rvPropertyCategory.adapter=PropertyCategoryAdapter()
+        binding.ilTitleBar.txtTitle.text=context?.getString(R.string.properties)
+        if(isBackBtn)
+        {
+            binding.ilTitleBar.imgBack.visibility=View.VISIBLE
+            binding.ilTitleBar.imgBack.setOnClickListener(this)
+        }
+
+        // empty property layout
+         binding.llNoItemFound.img.setImageDrawable(context?.getDrawable(R.drawable.ic_property))
+         binding.llNoItemFound.txtItem1.text=getString(R.string.sorry_no_property_found)
+        binding.llNoItemFound.txtItem2.text="We couldn't find properties related to selected category please select another one"
+
+
+        binding.rvPropertyCategory.adapter=propertyCategories
         binding.rvProperties.adapter=propertyAdapter
 
-        val properties=ArrayList<Property>()
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpsSvXKhuz2WvdB7sH0O8mc9gcVAIrR_Lu4BjtLcsYfWnv0sc95FYkKfxbNjim2znZCjk&usqp=CAU","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://img.traveltriangle.com/blog/wp-content/uploads/2017/10/restaurants-in-jaipur-cover1.jpg","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://media.cnn.com/api/v1/images/stellar/prod/190710135245-12-waterfront-restaurants.jpg?q=w_3498,h_2296,x_0,y_0,c_fill/w_1280","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_02NnJAEgi3jsp5l1SafV6btWCFbQNSMLqGoh8gTzdQgi42ZtCZWN6uV52EQnQ3jT0hI&usqp=CAU","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdaBFq0lMILnF9YJ7jrNIZZTQvxz7W4FM-HtArztIdK86HSSQ8er2gJ4cwN9MME7Un5J0&usqp=CAU","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoyKDLs8DA-WfZBdUUGMoowYhWRwri3y55W5cXlnCKFEG6OfBHV86Y3oNlcBcKiTlAw2A&usqp=CAU","Shades Banipark","Banipark,MI Road"))
 
-        propertyAdapter.submitList(properties)
+        getData()
+
     }
 
-    private fun setTitle()
+    private fun getData()
     {
-        binding.ilTitleBar.txtTitle.text="Properties"
+
+        viewModel.categories.observe(viewLifecycleOwner){
+            propertyCategories.submitList(it.categories)
+        }
+
+        searchViewModel.getSearchData.observe(viewLifecycleOwner) { it ->
+
+            binding.isPageProgress=false
+
+            if(it.status)
+            {
+                LocalBroadcastManager.getInstance(requireActivity()).sendBroadcast(Intent("propertiesFragment"))
+                page = it.properties.current_page
+                if(it.properties.current_page > 1)   propertyAdapter.addList(it.properties.data!!)
+                else  propertyAdapter.submitList(it.properties.data!!)
+            }else
+            {
+                page = it.properties.last_page
+                if(it.properties.current_page== 1)  propertyAdapter.submitList(it.properties.data!!)
+            }
+
+
+            if(0 < it.properties.data?.size!! || it.status)
+            {
+                binding.llNoItemFound.clLayout.visibility=View.GONE
+
+            }else if(it.properties.current_page==1 && 0 == it.properties.data?.size!!)
+            {
+                binding.llNoItemFound.clLayout.visibility=View.VISIBLE
+            }
+
+        }
+
+
+        val paginationScroll = object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                val lastVisibleItemPosition = layoutManager!!.findLastVisibleItemPosition()
+                if(lastVisibleItemPosition==propertyAdapter.itemCount-1 && dy > 0 )
+                {
+                    binding.isPageProgress=true
+                    getProperties(true, showProgress = false)
+                }
+            }
+        }
+        binding.rvProperties.addOnScrollListener(paginationScroll)
+
+    }
+
+
+    override fun onClick(data: Any, selectedPosition: Int, click_layout_code: Int) {
+       when(click_layout_code)
+       {
+           101->{
+               val category= data as Category
+               selected_cat_id=category.id
+               getProperties(showProgress = true)
+           }
+           102->
+           {
+               val property = data as FeaturedProperty
+               val propertyIntent = Intent(context, PropertyDetailActivity::class.java)
+               propertyIntent.putExtra(getString(R.string.propertyid),property.id.toString())
+               propertyIntent.putExtra(getString(R.string.propertyName),property.name)
+               startActivity(propertyIntent)
+           }
+
+       }
+
+    }
+
+    private fun getProperties(requireNextPage:Boolean=false,showProgress:Boolean=false)
+    {
+        searchRepository.getSearchData("","category",selected_cat_id.toString(),requireNextPage,page,showProgress)
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0?.id)
+        {
+            R.id.imgBack -> activity?.onBackPressedDispatcher!!.onBackPressed()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

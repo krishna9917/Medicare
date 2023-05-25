@@ -4,6 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="isPageProgress"
+            type="Boolean" />
+
+        <variable
+            name="isSearchProgress"
+            type="Boolean" />
+
+    </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clData"
         android:layout_width="match_parent"
@@ -25,8 +39,6 @@
 
 
 
-
-
         <EditText
             android:id="@+id/edtSearch"
             android:layout_width="0dp"
@@ -35,10 +47,24 @@
             app:layout_constraintStart_toEndOf="@id/imgBack"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/StyleInputField"
+            android:drawablePadding="10dp"
             android:layout_marginEnd="10dp"
+            android:paddingEnd="50dp"
             android:layout_height="wrap_content"
             app:drawableLeftCompat="@drawable/ic_search"
             tools:ignore="RtlSymmetry" />
+
+
+        <ProgressBar
+            app:layout_constraintBottom_toBottomOf="@id/edtSearch"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="10dp"
+            android:visibility="@{isSearchProgress?View.VISIBLE:View.GONE}"
+            android:theme="@style/StyleProgressBarColor"
+            app:layout_constraintEnd_toEndOf="@id/edtSearch"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
 
 
         <ImageView
@@ -66,16 +92,43 @@
             android:id="@+id/rvSearchProperty"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="5dp"
             android:layout_marginTop="10dp"
             android:layoutAnimation="@anim/layout_slide_from_right"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/llPageProgress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.842"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtLine"
             app:layout_constraintVertical_bias="1.0" />
+
+        <include
+            app:layout_constraintTop_toTopOf="@id/rvSearchProperty"
+            app:layout_constraintBottom_toBottomOf="@id/rvSearchProperty"
+            app:layout_constraintEnd_toEndOf="@id/rvSearchProperty"
+            app:layout_constraintStart_toStartOf="@id/rvSearchProperty"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:id="@+id/llNoItemFound"
+            layout="@layout/layout_no_item_found"/>
+
+
+
+
+            <include
+                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:background="@color/transparent"
+                android:id="@+id/llPageProgress"
+                app:animatedVisibility="@{isPageProgress}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                layout="@layout/layout_progressbar"/>
+
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

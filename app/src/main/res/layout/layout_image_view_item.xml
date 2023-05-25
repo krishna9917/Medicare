@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="imageData"
-            type="com.application.comeato.models.ImageData" />
+            name="image"
+            type="String" />
     </data>
 
 
@@ -28,8 +28,8 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/image"
-                app:netImageSrc="@{imageData.image}"
+                android:id="@+id/image1"
+                app:netImageSrc="@{image}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />

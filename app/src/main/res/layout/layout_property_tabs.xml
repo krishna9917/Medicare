@@ -10,7 +10,7 @@
         <import type="android.graphics.Typeface" />
         <variable
             name="tab"
-            type="com.application.comeato.models.PropertyServices" />
+            type="com.application.comeato.models.Tab" />
 
         <variable
             name="selected"
@@ -42,7 +42,7 @@
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="match_parent"
-                android:text="@{tab.name}"
+                android:text="@{tab.tab_name}"
                 android:id="@+id/txtTabName"
                 android:textColor="@{context.getResources().getColor(selected?R.color.color_theme_100:R.color.black)}"
                 android:paddingVertical="10dp"

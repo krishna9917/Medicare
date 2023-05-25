@@ -1,31 +1,54 @@
 package com.application.comeato.Activity.PropertyDetail
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Layout
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.application.comeato.Activity.CustomerSupport.SupportActivity
+import com.application.comeato.Activity.MembershipPlan.MembershipPlanActivity
+import com.application.comeato.Activity.WishList.WishListRepository
+import com.application.comeato.Activity.WishList.WishListViewModel
+import com.application.comeato.Activity.WishList.WishListViewModelFactory
 import com.application.comeato.Adapters.PropertyDetailsAdapter
 import com.application.comeato.Adapters.PropertyTabDataAdapter
+import com.application.comeato.Dialog.ShowAlert
 import com.application.comeato.Interfaces.AdapterClickListener
+import com.application.comeato.Interfaces.DialogClickListener
+import com.application.comeato.Interfaces.ShowDealListener
 import com.application.comeato.R
+import com.application.comeato.RoomDb.MyDatabase
 import com.application.comeato.Utilities.UtilsFunction
 import com.application.comeato.databinding.ActivityPropertyDetailBinding
-import com.application.comeato.models.ImageData
-import com.application.comeato.models.Property
-import com.application.comeato.models.PropertyData
-import com.application.comeato.models.PropertyServiceData
-import com.application.comeato.models.PropertyServices
+import com.application.comeato.models.Deal
+import com.application.comeato.models.FeaturedProperty
+import com.application.comeato.models.Tab
+import com.application.comeato.models.WishListData
+import com.comeato.Utilities.MyApp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class PropertyDetailActivity : AppCompatActivity(), View.OnClickListener, AdapterClickListener
+class PropertyDetailActivity : AppCompatActivity(), View.OnClickListener, AdapterClickListener,ShowDealListener,DialogClickListener
 {
-    private val binding by lazy {
-        ActivityPropertyDetailBinding.inflate(layoutInflater)
+
+    private val roomDatabase by lazy {
+        MyDatabase.getInstance(this).getRoomDao()
     }
-    private var propertyTabDataAdapter = PropertyTabDataAdapter(this)
+
+    private val binding by lazy {
+        DataBindingUtil.setContentView<ActivityPropertyDetailBinding>(
+            this,
+            R.layout.activity_property_detail
+        )
+    }
+    private var propertyTabDataAdapter = PropertyTabDataAdapter(this,this,this)
 
     private val imageSliderAdapter by lazy {
         PropertyDetailsAdapter(1)
@@ -34,17 +57,118 @@ class PropertyDetailActivity : AppCompatActivity(), View.OnClickListener, Adapte
         PropertyDetailsAdapter(this, 2)
     }
     private val similarPropertyAdapter by lazy {
-        PropertyDetailsAdapter(3)
+        PropertyDetailsAdapter(this,3)
     }
+
+    private val repository by lazy {
+        PropertyDetailRepository(MyApp.MySingleton.getApiInterface(), this,roomDatabase)
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, PropertyDetailViewModelFactory(repository))[PropertyDetailViewModel::class.java]
+    }
+
+
+    private val wishListRepository by lazy {
+        WishListRepository(MyApp.MySingleton.getApiInterface(),this,roomDatabase)
+    }
+
+    private val wishListViewModel by lazy {
+        ViewModelProvider(this,WishListViewModelFactory(wishListRepository))[WishListViewModel::class.java]
+    }
+
+    private lateinit var showDealCallBack:ShowDealListener
+
+
+    private var isWishListed=false
+
+    private lateinit var wishlistProperty:WishListData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
         Initializer()
     }
 
-    private fun Initializer() {
+    private fun Initializer()
+    {
+        binding.propertyName=intent.getStringExtra(getString(R.string.propertyName))
 
+        binding.txtReadMoreAndLess.setOnClickListener(this)
+        binding.imgBack.setOnClickListener(this)
+        binding.llPhone.setOnClickListener(this)
+        binding.llAddress.setOnClickListener(this)
+        binding.btnSupport.setOnClickListener(this)
+        binding.imgWishList.setOnClickListener(this)
+
+
+
+        binding.rvPropertyImages.adapter = imageSliderAdapter
+        binding.rvTabs.adapter = servicesAdapter
+        binding.rvSimilarOption.adapter = similarPropertyAdapter
+        binding.rvTabData.adapter = propertyTabDataAdapter
+
+
+
+        intent.getStringExtra(getString(R.string.propertyid))
+            ?.let { repository.getPropertyDetail(it) }
+
+
+
+        getData()
+
+    }
+
+    private fun getData()
+    {
+        var propertyInDb:WishListData?=null
+
+        lifecycleScope.launch {
+            propertyInDb = wishListRepository.getWishList(intent.getStringExtra(getString(R.string.propertyid))!!)
+        }
+
+        viewModel?.propertyDetail?.observe(this) {
+            binding.propertyData = it
+
+            if((propertyInDb?.property_id==it.property.id) || it.property.is_in_wishlist)
+            {
+                isWishListed = true
+                binding.isWishlisted=true
+            }
+            wishlistProperty = WishListData(it.property.featured_image_url,it.property.id,it.property.locality_name,it.property.name)
+            observeDescriptionText()
+            imageSliderAdapter.submitData(it)
+            servicesAdapter.submitData(it)
+            similarPropertyAdapter.submitData(it)
+            setDataAsPerData(it.property.tabs[0])
+        }
+
+
+        viewModel.dealCodeData.observe(this){
+            showDealCallBack.dealCodeResponse(it,null)
+            if(!it.status && it.error_code==404)
+            {
+                ShowAlert("You don't have membership...!!","Do you want to get Membership?",this,this,R.drawable.membership).show()
+            }else if(!it.status)
+            {
+               UtilsFunction.showError(this,it.message)
+            }
+        }
+
+        wishListViewModel.wishListResponse.observe(this){
+            binding.isWishlistProcessing=false
+            if(it.status)
+            {
+                isWishListed = !isWishListed
+                binding.isWishlisted = isWishListed
+            }else
+            {
+                UtilsFunction.showError(this,it.message)
+            }
+        }
+    }
+
+    private fun observeDescriptionText()
+    {
         binding.txtDescription.viewTreeObserver
             .addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -61,89 +185,41 @@ class PropertyDetailActivity : AppCompatActivity(), View.OnClickListener, Adapte
                     binding.txtReadMoreAndLess.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
-
-        binding.txtReadMoreAndLess.setOnClickListener(this)
-        binding.imgBack.setOnClickListener(this)
-
-        binding.rvPropertyImages.adapter = imageSliderAdapter
-        binding.rvTabs.adapter = servicesAdapter
-        binding.rvSimilarOption.adapter = similarPropertyAdapter
-
-        val sliderImages = ArrayList<ImageData>()
-        sliderImages.add(ImageData("https://im1.dineout.co.in/images/uploads/restaurant/sharpen/6/y/t/p60213-16645391636336da1b89ad3.jpg?tr=tr:n-medium"))
-        sliderImages.add(ImageData("https://im1.dineout.co.in/images/uploads/restaurant/sharpen/6/q/h/p63848-1665206214634107c6c331c.jpg?w=400"))
-        sliderImages.add(ImageData("https://im1.dineout.co.in/images/uploads/restaurant/sharpen/9/s/o/p9884-16621888756312fd4b0c44a.jpg?w=400"))
-        sliderImages.add(ImageData("https://d4t7t8y8xqo0t.cloudfront.net/resized/750X436/eazytrendz%2F2744%2Ftrend20200306032517.jpg"))
-        sliderImages.add(ImageData("https://images.squarespace-cdn.com/content/v1/550482f9e4b02d883729e175/1589206543947-JHNJ3CEUTE23U5AQDWK1/top+restaurants+near+me+tricky+fish+fort+worth+richardson+texas"))
-
-
-        val similarProperty = ArrayList<Property>()
-        similarProperty.add(
-            Property(
-                "1",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpsSvXKhuz2WvdB7sH0O8mc9gcVAIrR_Lu4BjtLcsYfWnv0sc95FYkKfxbNjim2znZCjk&usqp=CAU",
-                "Shades Banipark",
-                "Banipark,MI Road"
-            )
-        )
-        similarProperty.add(
-            Property(
-                "1",
-                "https://img.traveltriangle.com/blog/wp-content/uploads/2017/10/restaurants-in-jaipur-cover1.jpg",
-                "Shades Banipark",
-                "Banipark,MI Road"
-            )
-        )
-        similarProperty.add(
-            Property(
-                "1",
-                "https://media.cnn.com/api/v1/images/stellar/prod/190710135245-12-waterfront-restaurants.jpg?q=w_3498,h_2296,x_0,y_0,c_fill/w_1280",
-                "Shades Banipark",
-                "Banipark,MI Road"
-            )
-        )
-        similarProperty.add(
-            Property(
-                "1",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_02NnJAEgi3jsp5l1SafV6btWCFbQNSMLqGoh8gTzdQgi42ZtCZWN6uV52EQnQ3jT0hI&usqp=CAU",
-                "Shades Banipark",
-                "Banipark,MI Road"
-            )
-        )
-
-
-        val services = ArrayList<PropertyServices>()
-        services.add(PropertyServices("All Deals", PropertyServiceData()))
-        services.add(PropertyServices("Menu", PropertyServiceData()))
-        services.add(PropertyServices("Gallery", PropertyServiceData()))
-
-
-        val propertyData = PropertyData(sliderImages, services, similarProperty)
-        imageSliderAdapter.submitData(propertyData)
-        servicesAdapter.submitData(propertyData)
-        similarPropertyAdapter.submitData(propertyData)
-        binding.rvTabData.adapter = propertyTabDataAdapter
-        propertyTabDataAdapter.submitLayout( 0)
     }
 
-    override fun onClick(p0: View?) {
+    override  fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.txtReadMoreAndLess -> {
                 if (binding.txtReadMoreAndLess.text.toString() == getString(R.string.read_more)) {
-                    binding.isReadMoreVisibile = true
+                    binding.isReadMoreVisible = true
                     UtilsFunction.setAnimation(
                         this,
                         binding.txtFullDescription,
                         R.anim.animation_fall_down
                     )
                 } else {
-                    binding.isReadMoreVisibile = false
+                    binding.isReadMoreVisible = false
                 }
-
             }
-
+            R.id.llAddress->
+            {
+                UtilsFunction.openMapByAddress(binding.txtAddress.text.toString(),this)
+            }
+            R.id.llPhone ->{
+                UtilsFunction.contactDialer(binding.txtMobile.text.toString())
+            }
             R.id.imgBack -> {
                 finish()
+            }
+            R.id.btnSupport->{
+                startActivity(Intent(this,SupportActivity::class.java))
+            }
+            R.id.imgWishList->
+            {
+              binding.isWishlistProcessing = true
+                lifecycleScope.launch(Dispatchers.IO) {
+                    wishListRepository.wishListOperation(wishlistProperty,!isWishListed)
+                }
             }
         }
     }
@@ -151,29 +227,49 @@ class PropertyDetailActivity : AppCompatActivity(), View.OnClickListener, Adapte
 
     override fun onClick(data: Any, selectedPosition: Int, click_layout_code: Int)
     {
-        if(click_layout_code==101)
+        when(click_layout_code)
         {
-            when (selectedPosition) {
-                0 -> {
-                    binding.rvTabData.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-                    propertyTabDataAdapter.submitLayout( 0)
-                }
-                2 -> {
-                    val galleryImages = ArrayList<ImageData>()
-                    galleryImages.add(ImageData("https://im1.dineout.co.in/images/uploads/restaurant/sharpen/6/y/t/p60213-16645391636336da1b89ad3.jpg?tr=tr:n-medium"))
-                    galleryImages.add(ImageData("https://im1.dineout.co.in/images/uploads/restaurant/sharpen/6/q/h/p63848-1665206214634107c6c331c.jpg?w=400"))
-                    galleryImages.add(ImageData("https://im1.dineout.co.in/images/uploads/restaurant/sharpen/9/s/o/p9884-16621888756312fd4b0c44a.jpg?w=400"))
-                    galleryImages.add(ImageData("https://d4t7t8y8xqo0t.cloudfront.net/resized/750X436/eazytrendz%2F2744%2Ftrend20200306032517.jpg"))
-                    galleryImages.add(ImageData("https://images.squarespace-cdn.com/content/v1/550482f9e4b02d883729e175/1589206543947-JHNJ3CEUTE23U5AQDWK1/top+restaurants+near+me+tricky+fish+fort+worth+richardson+texas"))
-                    binding.rvTabData.layoutManager=GridLayoutManager(this,3)
-                    propertyTabDataAdapter.submitLayout( 1,galleryImages)
-                }
-
+            101->{
+                val tab = data as Tab
+                setDataAsPerData(tab)
             }
-        }else if(click_layout_code==102)
-        {
-
+            103->{
+                val property = data as FeaturedProperty
+                val propertyIntent = Intent(this,PropertyDetailActivity::class.java)
+                propertyIntent.putExtra(getString(R.string.propertyid),property.id.toString())
+                propertyIntent.putExtra(getString(R.string.propertyName),property.name)
+                startActivity(propertyIntent)
+            }
         }
-
     }
+
+    private fun setDataAsPerData(tab: Tab) {
+        when (tab.layout_type) {
+            1 -> {
+                   binding.rvTabData.layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                    propertyTabDataAdapter.submitLayout(tab.data as ArrayList<Any>, tab.layout_type)
+            }
+            2 -> {
+                binding.rvTabData.layoutManager = GridLayoutManager(this, 3)
+                propertyTabDataAdapter.submitLayout(tab.data as ArrayList<Any>, tab.layout_type)
+            }
+        }
+    }
+
+    override fun dealCodeResponse(data: Any, callBackListener: ShowDealListener?)
+    {
+         val dealData = data as Deal
+        intent.getStringExtra(getString(R.string.propertyid))?.let { repository.showDealCode(it,
+            dealData.id.toString()
+        ) }
+        showDealCallBack= callBackListener!!
+    }
+
+    override fun onClick(clickCode: Int, data: Any?)
+    {
+        startActivity(Intent(this,MembershipPlanActivity::class.java))
+    }
+
+
 }

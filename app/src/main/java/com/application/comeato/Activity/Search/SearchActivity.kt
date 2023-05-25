@@ -1,53 +1,134 @@
 package com.application.comeato.Activity.Search
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.application.comeato.Activity.PropertyDetail.PropertyDetailActivity
 import com.application.comeato.Adapters.PropertyAdapter
+import com.application.comeato.Interfaces.AdapterClickListener
 import com.application.comeato.R
 import com.application.comeato.databinding.ActivitySearchBinding
+import com.application.comeato.models.FeaturedProperty
 import com.application.comeato.models.Property
 import com.comeato.Utilities.MyApp
 
-class SearchActivity : AppCompatActivity(), View.OnClickListener {
+class SearchActivity : AppCompatActivity(), View.OnClickListener ,AdapterClickListener
+{
     private val binding by lazy {
            ActivitySearchBinding.inflate(layoutInflater)
     }
     private val searchRepository by lazy {
-        SearchRepository(MyApp.MySingleton.getApiInterface())
+        SearchRepository(MyApp.MySingleton.getApiInterface(),this)
     }
     private val searchViewModel by lazy {
         ViewModelProvider(this,SearchViewModelFactory(searchRepository))[SearchViewModel::class.java]
     }
     private val searchAdapter: PropertyAdapter by lazy {
-        PropertyAdapter()
+        PropertyAdapter(this)
     }
+    private val searchHandler=Handler(Looper.myLooper()!!)
+
+    private val searchType by lazy {
+         intent?.getStringExtra(getString(R.string.searchtype))?:""
+    }
+
+    private val categoryId by lazy {
+        intent?.getStringExtra(getString(R.string.searchcategoryid))?:""
+    }
+
+    private val searchRunnable by lazy {
+        Runnable {
+            binding.isSearchProgress=true
+            searchRepository.getSearchData(binding.edtSearch.text.toString(),searchType,categoryId)
+        }
+    }
+
+    private var page=1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        Initializer();
+        Initializer()
     }
 
 
     private fun Initializer()
     {
+        binding.edtSearch.isFocusableInTouchMode = true
+        binding.edtSearch.requestFocus()
         binding.imgBack.setOnClickListener(this)
         binding.rvSearchProperty.adapter=searchAdapter
-//        searchViewModel.getSearchData.observe(this) { it ->
-//            searchAdapter.submitList(it)
-//        }
 
 
-        val properties=ArrayList<Property>()
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpsSvXKhuz2WvdB7sH0O8mc9gcVAIrR_Lu4BjtLcsYfWnv0sc95FYkKfxbNjim2znZCjk&usqp=CAU","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://img.traveltriangle.com/blog/wp-content/uploads/2017/10/restaurants-in-jaipur-cover1.jpg","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://media.cnn.com/api/v1/images/stellar/prod/190710135245-12-waterfront-restaurants.jpg?q=w_3498,h_2296,x_0,y_0,c_fill/w_1280","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_02NnJAEgi3jsp5l1SafV6btWCFbQNSMLqGoh8gTzdQgi42ZtCZWN6uV52EQnQ3jT0hI&usqp=CAU","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdaBFq0lMILnF9YJ7jrNIZZTQvxz7W4FM-HtArztIdK86HSSQ8er2gJ4cwN9MME7Un5J0&usqp=CAU","Shades Banipark","Banipark,MI Road"))
-        properties.add(Property("1","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoyKDLs8DA-WfZBdUUGMoowYhWRwri3y55W5cXlnCKFEG6OfBHV86Y3oNlcBcKiTlAw2A&usqp=CAU","Shades Banipark","Banipark,MI Road"))
+        searchHandler.removeCallbacksAndMessages(null)
+        searchHandler.postDelayed(searchRunnable,500)
 
-        searchAdapter.submitList(properties)
+
+        searchViewModel.getSearchData.observe(this) { it ->
+            binding.isSearchProgress=false
+            binding.isPageProgress=false
+            if(it.status)
+            {
+                page = it.properties.current_page
+                if(it.properties.current_page > 1)   searchAdapter.addList(it.properties.data!!)
+                else  searchAdapter.submitList(it.properties.data!!)
+            }else
+            {
+                page = it.properties.last_page
+                if(it.properties.current_page== 1)   searchAdapter.submitList(it.properties.data!!)
+            }
+
+           if(page == 1 && (0 == it.properties.data?.size!! || it.properties.data == null) && searchAdapter.itemCount==0)
+            {
+                binding.llNoItemFound.clLayout.visibility=View.VISIBLE
+            }else
+            {
+                binding.llNoItemFound.clLayout.visibility=View.GONE
+            }
+        }
+
+
+
+
+        val paginationScroll = object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                val lastVisibleItemPosition = layoutManager!!.findLastVisibleItemPosition()
+                if(lastVisibleItemPosition==searchAdapter.itemCount-1 && dy > 0 )
+                {
+                    binding.isPageProgress=true
+                    searchRepository.getSearchData(binding.edtSearch.text.toString(),searchType,categoryId,true,page)
+                }
+            }
+        }
+        binding.rvSearchProperty.addOnScrollListener(paginationScroll)
+
+
+
+
+
+
+        binding.edtSearch.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int)
+            {
+                searchHandler.removeCallbacksAndMessages(null)
+                searchHandler.postDelayed(searchRunnable,500)
+            }
+            override fun afterTextChanged(p0: Editable?)
+            {}
+        })
 
 
     }
@@ -58,5 +139,14 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
        {
            R.id.imgBack-> finish()
        }
+    }
+
+    override fun onClick(data: Any, selectedPosition: Int, click_layout_code: Int)
+    {
+        val property = data as FeaturedProperty
+        val propertyIntent = Intent(this, PropertyDetailActivity::class.java)
+        propertyIntent.putExtra(getString(R.string.propertyid),property.id.toString())
+        propertyIntent.putExtra(getString(R.string.propertyName),property.name)
+        startActivity(propertyIntent)
     }
 }

@@ -4,4 +4,8 @@
     <dimen name="three_dp">3dp</dimen>
     <dimen name="five_dp">5dp</dimen>
     <dimen name="six_dp">6dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="one_half_dp">0.5dp</dimen>
+
 </resources>

@@ -4,13 +4,34 @@
 
     <data>
         <import type="android.content.Context" />
+        <import type="com.application.comeato.R"/>
         <import type="android.content.res.ColorStateList"/>
         <import type="androidx.core.content.ContextCompat"/>
+        <import type="android.view.View"/>
 
         <variable name="color" type="int"/>
 
         <variable
             name="context" type="Context" />
+
+
+        <variable
+            name="dealData"
+            type="com.application.comeato.models.Deal"/>
+
+
+        <variable
+            name="isProgress"
+            type="Boolean" />
+
+        <variable
+            name="coupon"
+            type="com.application.comeato.models.Coupon" />
+
+        <variable
+            name="couponCode"
+            type="String" />
+
 
     </data>
 
@@ -19,13 +40,10 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
-    android:clickable="true"
     android:id="@+id/cbItem"
-    android:focusable="true"
     android:layout_marginVertical="10dp"
     app:strokeColor="@color/color_theme_5"
-    android:layout_marginHorizontal="10dp"
-   >
+    android:layout_marginHorizontal="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,14 +55,49 @@
             android:layout_width="10dp"
             android:layout_height="match_parent"/>
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/clCouponCode"
+            android:visibility="gone"
+            android:layout_height="155dp">
+
+
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/celebration"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:text="@{couponCode}"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:background="@drawable/gradient6"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:padding="8dp"
+        android:id="@+id/clDealDetail"
+        android:background="@color/white"
         android:layout_height="match_parent">
 
-
         <TextView
-            android:text="Four Pints + One Starter"
+            android:text="@{dealData.title}"
             android:layout_width="match_parent"
             style="@style/Style_bold_font"
             android:textSize="18sp"
@@ -58,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtDealName"
-            android:text="Valid on Food Beverages Only"
+            android:text="@{dealData.short_description}"
             android:layout_width="0dp"
             android:textSize="12sp"
             android:id="@+id/txtCouponType"
@@ -67,20 +120,23 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/color_theme_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/txtLine"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="₹ 990"
+                android:text="@{dealData.amount_or_discount_label}"
                 android:textSize="12sp"
                 style="@style/Style_bold_font"
                 android:layout_height="wrap_content"/>
+
             <TextView
-                android:text="₹ 1990"
-                android:textSize="10sp"
-                app:strikeThrough="@{true}"
+                android:text="@{dealData.type_label}"
+                android:textSize="12sp"
+                android:textColor="@{context.getResources().getColor(color)}"
+                style="@style/Style_bold_font"
                 android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -102,7 +158,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="Valid Upto 2 People"
+                android:text="@{dealData.maximum_use_text}"
                 app:layout_constraintStart_toStartOf="parent"
                 android:textColor="@color/color_theme_150"
                 android:layout_height="wrap_content"
@@ -117,7 +173,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="Valid for All Day"
+            android:text="@{dealData.expiry_date_text}"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/color_theme_150"
             android:layout_height="wrap_content"
@@ -131,96 +187,118 @@
             app:drawableStartCompat="@drawable/ic_time" />
 
 
-     <androidx.constraintlayout.widget.ConstraintLayout
+     <LinearLayout
          app:layout_constraintEnd_toEndOf="parent"
          app:layout_constraintStart_toStartOf="parent"
          android:layout_marginTop="12dp"
+         android:weightSum="3.4"
+         android:orientation="horizontal"
          app:layout_constraintTop_toBottomOf="@id/txtTimeValid"
          android:layout_width="match_parent"
          android:layout_height="wrap_content">
 
          <com.google.android.material.card.MaterialCardView
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              app:strokeColor="@color/color_gray_40"
              app:strokeWidth="0.6dp"
+             android:layout_weight="1.2"
              android:id="@+id/cvDetail"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
+             android:clickable="true"
+             android:focusable="true"
              app:cardCornerRadius="10dp"
              app:cardElevation="0dp"
              android:layout_height="wrap_content">
              <LinearLayout
                  android:layout_width="match_parent"
                  android:paddingVertical="7dp"
-                 android:paddingHorizontal="10dp"
+                 android:gravity="center"
+                 android:paddingHorizontal="3dp"
                  android:layout_height="match_parent">
 
                  <TextView
                      style="@style/Style_bold_font"
-                     android:text="Show Details"
+                     android:text="@string/show_details"
                      android:textSize="12sp"
-                     android:layout_width="wrap_content"
+                     android:gravity="center"
+                     android:layout_width="match_parent"
                      android:layout_height="wrap_content"/>
              </LinearLayout>
          </com.google.android.material.card.MaterialCardView>
 
          <com.google.android.material.card.MaterialCardView
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              app:strokeColor="@color/color_gray_40"
              app:strokeWidth="0.6dp"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:layout_constraintStart_toEndOf="@id/cvDetail"
+             android:layout_weight="1.4"
              android:id="@+id/cvTermCon"
              android:layout_marginStart="10dp"
              app:cardCornerRadius="10dp"
              app:cardElevation="0dp"
+             android:clickable="true"
+             android:focusable="true"
              android:layout_height="wrap_content">
              <LinearLayout
                  android:layout_width="match_parent"
                  android:paddingVertical="7dp"
-                 android:paddingHorizontal="15dp"
+                 android:gravity="center"
+                 android:paddingHorizontal="3dp"
                  android:layout_height="match_parent">
 
                  <TextView
                      style="@style/Style_bold_font"
-                     android:text="T&amp;C"
+                     android:text="@string/t_amp_c"
                      android:textSize="12sp"
-                     android:layout_width="wrap_content"
+                     android:gravity="center"
+                     android:layout_width="match_parent"
                      android:layout_height="wrap_content"/>
              </LinearLayout>
          </com.google.android.material.card.MaterialCardView>
+
+
 
 
          <com.google.android.material.card.MaterialCardView
-             android:layout_width="wrap_content"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             android:layout_marginStart="10dp"
+             android:layout_width="match_parent"
+             android:id="@+id/cvShowDeal"
+             android:layout_marginStart="30dp"
              app:cardElevation="0dp"
+             android:layout_weight="0.8"
+             android:clickable="@{coupon==null}"
+             android:focusable="@{coupon==null}"
              android:layout_height="wrap_content">
 
              <LinearLayout
                  android:layout_width="match_parent"
-                 android:paddingVertical="7dp"
-                 android:paddingHorizontal="15dp"
-                 android:background="@color/color_green_80"
+                 android:orientation="horizontal"
+                 android:gravity="center"
+                 android:background="@{coupon!=null?@drawable/gradient6:@drawable/gradient7}"
                  android:layout_height="match_parent">
 
                  <TextView
                      style="@style/Style_bold_font"
-                     android:text="Show Deal Code"
+                     android:text="@{coupon!=null?coupon.code:@string/show_deal_code}"
                      android:textSize="12sp"
-                     android:textColor="@color/white"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"/>
+                     android:visibility="@{isProgress?View.GONE:View.VISIBLE}"
+                     android:paddingVertical="7dp"
+                     android:gravity="center"
+                     android:paddingHorizontal="5dp"
+                     android:textIsSelectable="@{coupon!=null}"
+                     android:textColor="@{coupon!=null?@color/color_theme_150:@color/white}"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"/>
+
+                 <pl.droidsonroids.gif.GifImageView
+                     android:src="@drawable/progressbar"
+                     android:layout_width="match_parent"
+                     android:visibility="@{isProgress?View.VISIBLE:View.GONE}"
+                     android:scaleType="centerCrop"
+                     android:layout_height="30dp"/>
+
              </LinearLayout>
          </com.google.android.material.card.MaterialCardView>
 
 
-     </androidx.constraintlayout.widget.ConstraintLayout>
+     </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

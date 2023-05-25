@@ -13,12 +13,12 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_theme_100</item>
+        <item name="android:windowAnimationStyle">@style/MyCustomActivityAnimation</item>
         <!-- Customize your theme here. -->
     </style>
 
 
     // font style
-
     <style name="Style_bold_font">
         <item name="android:textColor">@color/black</item>
         <item name="fontFamily">@font/bold</item>
@@ -46,19 +46,70 @@
     </style>
 
 
-    <style name="BottomSheetStyle" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bottom_sheet_corner</item>
-    </style>
-
-
 
     <!--    profile -->
     <style name="Style_profile_detail" parent="@style/Widget.AppCompat.EditText">
         <item name="android:padding">5dp</item>
         <item name="android:drawablePadding">8dp</item>
         <item name="android:background">@color/transparent</item>
-        <item name="android:textColor">@color/color_theme_70</item>
+        <item name="android:textColor">@color/color_gray_70</item>
         <item name="android:fontFamily">@font/regular</item>
+    </style>
+
+
+
+<!--  dialog style-->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="DialogBounceAnimation">
+        <item name="android:windowEnterAnimation">@anim/animation_bounce</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="FullScreenDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+<!--    bottomsheet corner round style-->
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetBackground</item>
+    </style>
+
+    <style name="bottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_corner</item>
+    </style>
+
+
+
+    <style name="StyleProgressBarColor" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/color_theme_20</item>
+    </style>
+
+
+
+
+    <!--    Activity transaction-->
+    <style name="MyCustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">
+            @anim/anim_slide_in_right
+        </item>
+        <item name="android:activityOpenExitAnimation">
+            @anim/anim_slide_out_left
+        </item>
+        <item name="android:activityCloseEnterAnimation">
+            @anim/anim_slide_in_left
+        </item>
+        <item name="android:activityCloseExitAnimation">
+            @anim/anim_slide_out_right
+        </item>
     </style>
 
 

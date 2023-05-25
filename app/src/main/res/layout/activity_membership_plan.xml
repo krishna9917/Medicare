@@ -3,208 +3,222 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.application.comeato.R"/>
+        <variable
+            name="subscriptionData"
+            type="com.application.comeato.models.Subscription" />
+    </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Activity.MembershipPlan.MembershipPlanActivity">
 
-
         <ImageView
-            android:id="@+id/imgBg"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/white"
-            android:scaleType="centerCrop"
-            android:src="@drawable/background6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:padding="10dp"
             android:id="@+id/imgBack"
-            android:src="@drawable/ic_back_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints"
-            app:tint="@color/black" />
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="@id/guideline5"
-            app:layout_constraintEnd_toStartOf="@id/guideline1"
-            android:layout_width="wrap_content"
-            android:gravity="end"
-            android:layout_height="wrap_content">
-
-
-
-
-            <TextView
-                android:textSize="24sp"
-                android:paddingEnd="8dp"
-                android:paddingStart="50dp"
-                android:textAllCaps="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Superscopper"
-                android:textColor="@color/color_black_10"
-                style="@style/Style_bold_font" />
-
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="₹"
-                    android:gravity="center"
-                    android:paddingHorizontal="2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="999"
-                    android:paddingEnd="5dp"
-                    android:textSize="35sp"
-                    android:textColor="@color/color_theme_100"
-                    style="@style/Style_bold_font" />
-
-                <TextView
-                    android:text="/ year"
-                    style="@style/Style_medium_font"
-                    android:textSize="15sp"
-                    android:gravity="bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-
-            </LinearLayout>
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="18dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/transparent"
-                android:id="@+id/cvEditProfile"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/color_blue_100"
-                app:strokeWidth="0.5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingVertical="5dp"
-                    android:paddingHorizontal="10dp"
-                    android:orientation="horizontal"
-                  >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="5dp"
-                        android:gravity="center"
-                        style="@style/Style_bold_font"
-                        android:textColor="@color/color_blue_100"
-                        android:text="@string/buy_now" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-
-        </LinearLayout>
+            android:padding="10dp"
+            android:src="@drawable/ic_back_arrow"
+            android:translationZ="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black"
+            tools:ignore="MissingConstraints" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/imgBg"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:translationZ="3dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{subscriptionData.status?View.VISIBLE:View.GONE}"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_height="0dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-
-
-            <androidx.cardview.widget.CardView
+            <ImageView
+                android:id="@+id/imgBg"
                 android:layout_width="match_parent"
-                app:cardElevation="0dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="300dp"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
+                android:src="@drawable/background6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="25dp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/guideline1"
+                app:layout_constraintTop_toTopOf="@id/guideline5">
+
+
+                <TextView
+                    style="@style/Style_bold_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="8dp"
+                    android:textAllCaps="true"
+                    android:text="@{subscriptionData.annual_plane.title}"
+                    android:textColor="@color/color_black_10"
+                    android:textSize="24sp" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:text="₹" />
+
+                    <TextView
+                        style="@style/Style_bold_font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@{subscriptionData.annual_plane.amount}"
+                        android:textColor="@color/color_theme_100"
+                        android:textSize="35sp" />
+
+                    <TextView
+                        style="@style/Style_medium_font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="/ year"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvBuySubscription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="18dp"
+                    android:clickable="@{!subscriptionData.annual_plane.is_membership_active}"
+                    android:focusable="@{!subscriptionData.annual_plane.is_membership_active}"
+                    app:cardBackgroundColor="@{subscriptionData.annual_plane.is_membership_active?@color/color_green_100:@color/color_blue_100}"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp">
+
+                        <TextView
+                            style="@style/Style_bold_font"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:gravity="center"
+                            android:text="@{subscriptionData.annual_plane.is_membership_active?@string/active:@string/buy_now}"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                android:translationZ="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_height="0dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgBg">
 
-
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vpPlanFeatures"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="25dp"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="50dp"
-                    android:paddingVertical="30dp" />
-
-            </androidx.cardview.widget.CardView>
+                    android:layout_height="match_parent">
 
 
+                    <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
+                        android:id="@+id/vpPlanFeatures"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.core.widget.NestedScrollView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="-180dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:rotation="85"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgBg"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="30dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="30dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="26dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="-180dp"
-            app:layout_constraintTop_toBottomOf="@id/imgBg"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:rotation="85"
-            android:gravity="center"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_support"
+            app:backgroundTint="@color/color_theme_100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.0"/>
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="30dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="30dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="26dp" />
+            app:tint="@color/white" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,10 +16,13 @@
 
         <import type="android.view.View"/>
 
-
         <variable
             name="selected"
             type="boolean" />
+
+        <variable
+            name="categoryData"
+            type="com.application.comeato.models.Category" />
 
 
     </data>
@@ -43,10 +46,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="@{categoryData==null?View.VISIBLE:View.GONE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:background="@color/color_gray_100"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{categoryData==null?View.GONE:View.VISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_height="match_parent"
             android:padding="8dp">
@@ -72,7 +94,8 @@
                         android:layout_height="match_parent"
                         android:background="@color/color_gray_20"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/background4"
+                        android:padding="10dp"
+                        app:netImageSrc="@{categoryData.image_url}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -86,8 +109,9 @@
                         android:background="@color/color_black_5"
                         android:gravity="center"
                         android:paddingHorizontal="4dp"
-                        android:text="@string/restaurant"
+                        android:text="@{categoryData.name}"
                         android:textAllCaps="true"
+                        android:textSize="11sp"
                         android:textColor="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

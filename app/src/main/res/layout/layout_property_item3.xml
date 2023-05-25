@@ -6,7 +6,7 @@
 
         <variable
             name="property"
-            type="com.application.comeato.models.Property" />
+            type="com.application.comeato.models.FeaturedProperty" />
 
     </data>
 
@@ -43,7 +43,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:netImageSrc="@{property.image}" />
+                    app:netImageSrc="@{property.featured_image_url}" />
 
                 <TextView
                     android:id="@+id/txtProductName"

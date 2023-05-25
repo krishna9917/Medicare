@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
+    <data>
+        <variable
+            name="isProgress"
+            type="Boolean" />
+
+    </data>
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:fillViewport="true"
@@ -192,9 +200,11 @@
                         android:layout_width="wrap_content"
                         android:text="@string/register"
                         app:backgroundTint="@null"
+                        android:id="@+id/btnRegister"
                         android:background="@drawable/btn_gradient"
                         android:paddingHorizontal="80dp"
                         android:layout_marginTop="40dp"
+                        app:showProgress="@{isProgress}"
                         android:textAllCaps="false"
                         android:layout_height="wrap_content"/>
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="image"
-            type="com.application.comeato.models.ImageData" />
+            type="String" />
 
     </data>
 
@@ -14,6 +14,8 @@
     android:layout_width="match_parent"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
+    app:strokeWidth="0.4dp"
+    app:strokeColor="@color/color_theme_20"
     android:layout_margin="5dp"
     android:layout_height="120dp">
 
@@ -29,7 +31,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:netImageSrc="@{image.image}"
+        app:netImageSrc="@{image}"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
